@@ -1,10 +1,8 @@
-import React from 'react';
-import './App.css';
-import { _Button } from './components/atoms/button';
+import RoutesApp from "./routes";
 
 function App() {
   return (
-    <_Button></_Button>
+    <RoutesApp />
   );
 }
 

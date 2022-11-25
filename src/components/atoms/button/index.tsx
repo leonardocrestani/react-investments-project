@@ -1,9 +1,7 @@
 import Button from "@mui/material/Button"
 
-const _Button = () => {
-    return(
-        <Button variant="outlined">Entrar</Button>
+export const ButtonAtom = ({ children, onClick }: { children: string, onClick: () => void }) => {
+    return (
+        <Button variant="outlined" onClick={() => onClick()}>{children}</Button>
     )
 }
-
-export {_Button}
