@@ -5,7 +5,9 @@ export const ProductsPage = () => {
     return (
         <>
             <Navbar></Navbar>
-            <InvestmentsModal />
+            <div style={{ margin: '32px 124px' }}>
+                <InvestmentsModal />
+            </div>
         </>
     )
 }

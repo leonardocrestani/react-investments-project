@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { SubmitButtonAtom } from '../../atoms/submitButton';
 import { FormTextFieldAtom } from '../../atoms/formTextField';
 import { userApi } from '../../../services/user.service';
-import { redirect } from 'react-router-dom';
+import { useUser } from '../../../contexts/userContext'
+import { redirect, Route } from 'react-router-dom';
 
 export interface FormField {
     value: string,
@@ -19,6 +20,8 @@ export interface ISubmitButton {
 
 export const Form = ({ initialFormFields, submitButton }: { initialFormFields: FormField[], submitButton: ISubmitButton }) => {
 
+    const { full_name, login } = useUser()
+
     const [formFields, setFormFields] = useState<FormField[]>(initialFormFields)
 
     const onChange = (name: string, value: string) => {
@@ -32,7 +35,7 @@ export const Form = ({ initialFormFields, submitButton }: { initialFormFields: F
         setFormFields(newFormFields)
     }
 
-    const submitForm = async (): Promise<void> => {
+    const submitForm = async (): Promise<any> => {
         let formPayload: any = formFields.find(field => {
             if (field.name === "cpf") {
                 return field
@@ -42,11 +45,11 @@ export const Form = ({ initialFormFields, submitButton }: { initialFormFields: F
             }
         })
         try {
-            const user = await userApi.get(formPayload.value)
-            console.log(user)
-            if (user) {
-                console.log('verificou')
-                redirect("/dashboard");
+            const { data } = await userApi.get(formPayload.value)
+            console.log(data)
+            if (data) {
+                login(data.full_name, data.cpf, data.account, data.checkingAccountAmount, data.positions, data.consolidated)
+                return <Route path="/dashboard" />
             }
         }
         catch (error) {

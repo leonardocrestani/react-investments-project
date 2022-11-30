@@ -1,15 +1,12 @@
 import Link from "@mui/material/Link";
 
-export const LinkAtom = ({children} : {children: string}) => {
-    return(
+export const LinkAtom = ({ children, path }: { children: string, path: string }) => {
+    return (
         <Link
-            component="button"
             variant="body2"
-            onClick={() => {
-                
-            }}
-            >
+            href={path}
+        >
             {children}
-        </Link>
+        </Link >
     )
 }

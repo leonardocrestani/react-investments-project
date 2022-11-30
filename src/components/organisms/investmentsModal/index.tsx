@@ -19,7 +19,7 @@ export const InvestmentsModal = () => {
                 return await trendApi.getAll()
             }
             fetchData().then((result: any): any => {
-                setTrends(result.data)
+                setTrends(result.data.trends)
                 console.log('aaa')
             }).catch((error) => {
                 console.log(error)
@@ -28,7 +28,7 @@ export const InvestmentsModal = () => {
     });
 
     return (
-        <div style={{ margin: '32px' }}>
+        <>
             <TableHeaderAtom>Produtos</TableHeaderAtom>
             <Grid container spacing={2}>
                 {
@@ -39,6 +39,6 @@ export const InvestmentsModal = () => {
                     )
                 }
             </Grid>
-        </div>
+        </>
     )
 }

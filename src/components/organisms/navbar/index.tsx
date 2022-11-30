@@ -1,21 +1,30 @@
-import { AppBar, Box, IconButton, Link, MenuItem, Toolbar, Typography } from "@mui/material"
+import { AppBar, Box, MenuItem, Toolbar, Typography } from "@mui/material"
 import { NavLink } from "react-router-dom"
+import { useUser } from "../../../contexts/userContext"
 
 export const Navbar = () => {
+
+    const { logout } = useUser()
+
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static" color="primary" style={{ backgroundColor: '#2A2929', paddingLeft: '48px', paddingRight: '48px' }}>
+            <AppBar position="static" color="primary" style={{ backgroundColor: '#2A2929', padding: '4px 138px' }}>
                 <Toolbar variant="dense">
-                    <MenuItem>
-                        <NavLink to="/dashboard" style={{ textDecoration: "none", color: "white" }}>
+                    <NavLink to="/dashboard" style={{ textDecoration: "none", color: "white" }}>
+                        <MenuItem>
                             <Typography textAlign="center">Dashboard</Typography>
-                        </NavLink>
-                    </MenuItem>
-                    <MenuItem>
-                        <NavLink to="/products" style={{ textDecoration: "none", color: "white" }}>
+                        </MenuItem>
+                    </NavLink>
+                    <NavLink to="/products" style={{ textDecoration: "none", color: "white" }}>
+                        <MenuItem>
                             <Typography textAlign="center">Produtos</Typography>
-                        </NavLink>
-                    </MenuItem>
+                        </MenuItem>
+                    </NavLink>
+                    <NavLink to="/" onClick={logout} style={{ textDecoration: "none", color: "white", marginLeft: "auto" }}>
+                        <MenuItem>
+                            <Typography textAlign="center">Sair</Typography>
+                        </MenuItem>
+                    </NavLink>
                 </Toolbar>
             </AppBar>
         </Box>
