@@ -1,5 +1,5 @@
-import { Form, FormField } from "../../molecules/form"
-import {LinkAtom} from '../../atoms/link'
+import { Form, FormField, ISubmitButton } from "../../molecules/form"
+import { LinkAtom } from '../../atoms/link'
 import Grid from "@mui/material/Grid"
 
 const initialFormFields: FormField[] = [
@@ -11,10 +11,15 @@ const initialFormFields: FormField[] = [
     },
 ]
 
+const submitButton: ISubmitButton = {
+    method: 'POST',
+    label: 'Entrar',
+}
+
 export const Login = () => {
-    return(
+    return (
         <Grid container spacing={2} direction="column" alignItems="center" justifyContent='center' >
-            <Form initialFormFields={initialFormFields}/>
+            <Form initialFormFields={initialFormFields} submitButton={submitButton} />
             <Grid item xs={12}>
                 <LinkAtom>Cadastre-se</LinkAtom>
             </Grid>

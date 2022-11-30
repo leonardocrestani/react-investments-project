@@ -1,8 +1,9 @@
 import Grid from '@mui/material/Grid';
 import { useState } from 'react';
-import { ButtonAtom } from '../../atoms/button';
-import { TextFieldAtom } from '../../atoms/textField';
+import { SubmitButtonAtom } from '../../atoms/submitButton';
+import { FormTextFieldAtom } from '../../atoms/formTextField';
 import { userApi } from '../../../services/user.service';
+import { redirect } from 'react-router-dom';
 
 export interface FormField {
     value: string,
@@ -11,7 +12,12 @@ export interface FormField {
     type: string
 }
 
-export const Form = ({ initialFormFields }: { initialFormFields: FormField[] }) => {
+export interface ISubmitButton {
+    method: string,
+    label: string,
+}
+
+export const Form = ({ initialFormFields, submitButton }: { initialFormFields: FormField[], submitButton: ISubmitButton }) => {
 
     const [formFields, setFormFields] = useState<FormField[]>(initialFormFields)
 
@@ -26,15 +32,22 @@ export const Form = ({ initialFormFields }: { initialFormFields: FormField[] }) 
         setFormFields(newFormFields)
     }
 
-    const submitForm = async () => {
+    const submitForm = async (): Promise<void> => {
         let formPayload: any = formFields.find(field => {
             if (field.name === "cpf") {
                 return field
+            }
+            else {
+                return formFields
             }
         })
         try {
             const user = await userApi.get(formPayload.value)
             console.log(user)
+            if (user) {
+                console.log('verificou')
+                redirect("/dashboard");
+            }
         }
         catch (error) {
             console.log(error)
@@ -47,12 +60,12 @@ export const Form = ({ initialFormFields }: { initialFormFields: FormField[] }) 
             {
                 formFields.map((field: FormField) => (
                     <Grid item xs={12} >
-                        <TextFieldAtom name={field.name} type={field.type} label={field.label} onChange={onChange} />
+                        <FormTextFieldAtom name={field.name} type={field.type} label={field.label} onChange={onChange} />
                     </Grid>)
                 )
             }
             <Grid item xs={12}>
-                <ButtonAtom onClick={submitForm}>Entrar</ButtonAtom>
+                <SubmitButtonAtom children={submitButton.label} onClick={submitForm}></SubmitButtonAtom>
             </Grid>
         </>
     )

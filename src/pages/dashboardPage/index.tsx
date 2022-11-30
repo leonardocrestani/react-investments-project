@@ -1,5 +1,10 @@
+import { Navbar } from '../../components/organisms/navbar'
+
 export const DashboardPage = () => {
     return (
-        <h1>TESTE</h1>
+        <>
+            <Navbar></Navbar>
+            <h1>Dashboard</h1>
+        </>
     )
 }
