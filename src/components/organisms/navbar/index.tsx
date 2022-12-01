@@ -7,7 +7,7 @@ export const Navbar = () => {
     const { logout } = useUser()
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1 }} style={{marginBottom: '26px'}}>
             <AppBar position="static" color="primary" style={{ backgroundColor: '#2A2929', padding: '4px 138px' }}>
                 <Toolbar variant="dense">
                     <NavLink to="/dashboard" style={{ textDecoration: "none", color: "white" }}>

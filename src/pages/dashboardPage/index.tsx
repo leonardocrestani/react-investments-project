@@ -1,12 +1,13 @@
+import { Container } from '@mui/material'
 import { Navbar } from '../../components/organisms/navbar'
 
 export const DashboardPage = () => {
     return (
         <>
             <Navbar></Navbar>
-            <div style={{ margin: '32px 124px' }}>
+            <Container fixed>
                 <h1>TESTE</h1>
-            </div>
+            </Container>
         </>
     )
 }

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-interface userPayload {
+export interface userPayload {
     full_name: string,
     cpf: string,
     account: string
@@ -12,7 +12,8 @@ export const userApi = {
         return user
     },
     create: async (payload: userPayload) => {
-        const user = await axios.post('/user', payload)
+        console.log(payload)
+        const user = await axios.post('http://localhost:3000/user', payload)
         return user
     },
     findPosition: async (cpf: string) => {
