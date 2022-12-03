@@ -43,6 +43,7 @@ export default function UserProvider({ children }: { children: any }) {
 
     const login = (full_name: string, cpf: string, account: string, checkingAccountAmount: number, positions: any, consolidated: number) => {
         setUserData({ full_name, cpf, account, checkingAccountAmount, positions, consolidated });
+        console.log("chamou login")
     }
 
     const logout = () => {

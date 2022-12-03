@@ -13,7 +13,7 @@ export const userApi = {
     },
     create: async (payload: userPayload) => {
         console.log(payload)
-        const user = await axios.post('http://localhost:3000/user', payload)
+        const user = await axios.post('http://localhost:3003/user', payload)
         return user
     },
     findPosition: async (cpf: string) => {

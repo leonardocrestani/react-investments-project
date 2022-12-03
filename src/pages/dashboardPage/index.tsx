@@ -1,12 +1,16 @@
-import { Container } from '@mui/material'
+import { Container, Divider } from '@mui/material'
 import { Navbar } from '../../components/organisms/navbar'
+import { PersonalInformation } from '../../components/organisms/personalInformation'
+import { InvestedProducts } from '../../components/organisms/investedProducts'
 
 export const DashboardPage = () => {
     return (
         <>
             <Navbar></Navbar>
             <Container fixed>
-                <h1>TESTE</h1>
+                <PersonalInformation></PersonalInformation>
+                <Divider variant="inset" style={{ margin: "24px 0px" }} />
+                <InvestedProducts></InvestedProducts>
             </Container>
         </>
     )

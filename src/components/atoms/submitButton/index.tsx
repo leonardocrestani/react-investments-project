@@ -1,8 +1,8 @@
-import Button from "@mui/material/Button"
+import { LoadingButton } from '@mui/lab';
 
-export const SubmitButtonAtom = ({ children, onClick }: { children: string, onClick: () => void }) => {
+export const SubmitButtonAtom = ({ children, onClick, loading }: { children: string, onClick: () => void, loading: boolean }) => {
 
     return (
-        <Button variant="outlined" onClick={() => onClick()}>{children}</Button>
+        <LoadingButton loading={loading} variant="outlined" onClick={() => onClick()}>{children}</LoadingButton>
     )
 }

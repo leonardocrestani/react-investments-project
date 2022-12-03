@@ -24,7 +24,7 @@ export const InvestmentCard = ({ name, price }: { name: string, price: number })
                 </Typography>
             </CardContent>
             <CardActions>
-                <SubmitButtonAtom children={submitButton.label} onClick={onClick}></SubmitButtonAtom>
+                <SubmitButtonAtom children={submitButton.label} onClick={onClick} loading={false}></SubmitButtonAtom>
             </CardActions>
         </Card >
     )
