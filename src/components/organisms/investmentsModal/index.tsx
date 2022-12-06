@@ -2,7 +2,7 @@ import { Grid } from "@mui/material"
 import { useEffect, useState } from "react"
 import { trendApi } from '../../../services/trend.service';
 import { InvestmentCard } from '../../molecules/investmentCard'
-import { TableHeaderAtom } from '../../atoms/tableHeader'
+import { TableHeaderAtom } from '../../molecules/tableHeader'
 
 interface ITrend {
     symbol: string,

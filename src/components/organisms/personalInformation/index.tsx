@@ -6,11 +6,16 @@ import PersonIcon from '@mui/icons-material/Person';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import PaidIcon from '@mui/icons-material/Paid';
+import { SubmitButtonAtom } from "../../atoms/submitButton";
 
 
 export const PersonalInformation = () => {
 
-    const { full_name, cpf, account, checkingAccountAmount, positions, consolidated } = useUser()
+    const { full_name, cpf, account, checkingAccountAmount, consolidated } = useUser()
+
+    const submitDeposit = () => {
+        
+    }
 
     return (
         <Grid container spacing={2} direction="column" alignItems="center" justifyContent='center' >
@@ -55,6 +60,7 @@ export const PersonalInformation = () => {
                             </Avatar>
                         </ListItemAvatar>
                         <ListItemText primary="Saldo" secondary={checkingAccountAmount} />
+                        <SubmitButtonAtom onClick={submitDeposit} loading={false}>Depositar</SubmitButtonAtom>
                     </ListItem>
                     <Divider variant="inset" component="li" />
                     <ListItem>
