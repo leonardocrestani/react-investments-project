@@ -1,6 +1,11 @@
 import { FormControl, InputLabel, NativeSelect } from "@mui/material"
 
-export const TablePageField = ({ children }: { children: string }) => {
+export const TablePageField = ({ children, pages }: { children: string, pages: number }) => {
+
+    const options = []
+    for (let i = 2; i <= pages; i++) {
+        options.push(<option value={i}>{i}</option>)
+    }
 
     return (
         <FormControl fullWidth>
@@ -8,17 +13,12 @@ export const TablePageField = ({ children }: { children: string }) => {
                 Página
             </InputLabel>
             <NativeSelect
-                defaultValue={30}
                 inputProps={{
                     id: 'uncontrolled-native',
                 }}
             >
                 <option value={1}>{1}</option>
-                <option value={2}>{2}</option>
-                <option value={3}>{3}</option>
-                <option value={4}>{4}</option>
-                <option value={5}>{5}</option>
-                <option value={6}>{6}</option>
+                {options.map(option => option)}
             </NativeSelect>
         </FormControl>
     )

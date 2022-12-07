@@ -5,6 +5,7 @@ import { FormTextFieldAtom } from '../../atoms/formTextField';
 import { userApi } from '../../../services/user.service';
 import { useUser } from '../../../contexts/userContext'
 import { useNavigate } from 'react-router-dom';
+import { format } from '@fnando/cpf';
 
 export interface FormField {
     value: string,
@@ -54,7 +55,7 @@ export const Form = ({ initialFormFields, submitButton, formTitle }: { initialFo
                 const { data } = await userApi.get(formPayload.value)
                 console.log(data)
                 if (data) {
-                    login(data.full_name, data.cpf, data.account, data.checkingAccountAmount, data.positions, data.consolidated)
+                    login(data.full_name, format(data.cpf), data.account, data.checkingAccountAmount.toLocaleString('pt-BR'), data.positions, data.consolidated.toLocaleString('pt-BR'))
                     navigate("/dashboard")
                     setLoading(false)
                 }

@@ -16,8 +16,8 @@ export const userApi = {
         const user = await axios.post('http://localhost:3003/user', payload)
         return user
     },
-    findPosition: async (cpf: string) => {
-        const userPosition = await axios.get(`/user/userPosition/${cpf}`)
+    findPosition: async (cpf: string, limit: number, offset: number) => {
+        const userPosition = await axios.get(`http://localhost:3003/userPosition/${cpf}?limit=${limit}&offset=${offset}`)
         return userPosition
     }
 }

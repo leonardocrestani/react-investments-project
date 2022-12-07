@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Grid"
-import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material"
+import { Divider, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material"
 import { useUser } from "../../../contexts/userContext"
 import BadgeIcon from '@mui/icons-material/Badge';
 import PersonIcon from '@mui/icons-material/Person';
@@ -7,14 +7,30 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import PaidIcon from '@mui/icons-material/Paid';
 import { SubmitButtonAtom } from "../../atoms/submitButton";
+import { useState } from "react";
+import { ListItemAvatarAtom } from '../../atoms/listItemAvatar'
+import { DepositModal } from '../../molecules/depositModal'
 
 
 export const PersonalInformation = () => {
 
     const { full_name, cpf, account, checkingAccountAmount, consolidated } = useUser()
 
+    const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false)
+
+    const handleClickOpen = () => {
+        setLoading(true)
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+        setLoading(false)
+    };
+
     const submitDeposit = () => {
-        
+
     }
 
     return (
@@ -27,49 +43,42 @@ export const PersonalInformation = () => {
                     }}
                 >
                     <ListItem>
-                        <ListItemAvatar>
-                            <Avatar sx={{ bgcolor: 'transparent', color: "#2A2929" }}>
-                                <BadgeIcon />
-                            </Avatar>
-                        </ListItemAvatar>
+                        <ListItemAvatarAtom>
+                            <BadgeIcon />
+                        </ListItemAvatarAtom>
                         <ListItemText primary="Nome completo" secondary={full_name} />
                     </ListItem>
                     <Divider variant="inset" component="li" />
                     <ListItem>
                         <ListItemAvatar>
-                            <Avatar sx={{ bgcolor: 'transparent', color: "#2A2929" }}>
+                            <ListItemAvatarAtom>
                                 <PersonIcon />
-                            </Avatar>
+                            </ListItemAvatarAtom>
                         </ListItemAvatar>
                         <ListItemText primary="CPF" secondary={cpf} />
                     </ListItem>
                     <Divider variant="inset" component="li" />
                     <ListItem>
-                        <ListItemAvatar>
-                            <Avatar sx={{ bgcolor: 'transparent', color: "#2A2929" }}>
-                                <AccountBalanceIcon />
-                            </Avatar>
-                        </ListItemAvatar>
+                        <ListItemAvatarAtom>
+                            <AccountBalanceIcon />
+                        </ListItemAvatarAtom>
                         <ListItemText primary="Conta" secondary={account} />
                     </ListItem>
                     <Divider variant="inset" component="li" />
                     <ListItem>
-                        <ListItemAvatar>
-                            <Avatar sx={{ bgcolor: 'transparent', color: "#2A2929" }}>
-                                <AccountBalanceWalletIcon />
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary="Saldo" secondary={checkingAccountAmount} />
-                        <SubmitButtonAtom onClick={submitDeposit} loading={false}>Depositar</SubmitButtonAtom>
+                        <ListItemAvatarAtom>
+                            <AccountBalanceWalletIcon />
+                        </ListItemAvatarAtom>
+                        <ListItemText primary="Saldo" secondary={`${checkingAccountAmount} R$`} />
+                        <SubmitButtonAtom onClick={handleClickOpen} loading={loading}>Depositar</SubmitButtonAtom>
+                        <DepositModal open={open} handleClose={handleClose}>Depósito</DepositModal>
                     </ListItem>
                     <Divider variant="inset" component="li" />
                     <ListItem>
-                        <ListItemAvatar>
-                            <Avatar sx={{ bgcolor: 'transparent', color: "#2A2929" }}>
-                                <PaidIcon />
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary="Saldo provisionado" secondary={consolidated} />
+                        <ListItemAvatarAtom>
+                            <PaidIcon />
+                        </ListItemAvatarAtom>
+                        <ListItemText primary="Saldo provisionado" secondary={`${consolidated} R$`} />
                     </ListItem>
                 </List>
             </Grid>

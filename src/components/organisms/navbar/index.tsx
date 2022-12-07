@@ -11,7 +11,7 @@ export const Navbar = () => {
     return (
         <Box sx={{ flexGrow: 1 }} style={{ marginBottom: '26px' }}>
             <AppBar position="static" color="primary" style={{ backgroundColor: '#2A2929', padding: '4px 138px' }}>
-                <Toolbar variant="dense">
+                <Toolbar>
                     <NavLink to="/dashboard" style={{ textDecoration: "none", color: "white" }}>
                         <MenuItem>
                             <Avatar sx={{ bgcolor: 'transparent', marginRight: '4px' }}>

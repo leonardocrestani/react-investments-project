@@ -31,7 +31,7 @@ export const Register = () => {
 
     return (
         <Grid container spacing={2} direction="column" alignItems="center" justifyContent='center' >
-            <Form initialFormFields={initialFormFields} submitButton={submitButton} formTitle={"Cadastro"}/>
+            <Form initialFormFields={initialFormFields} submitButton={submitButton} formTitle={"Cadastro"} />
         </Grid>
     )
 }

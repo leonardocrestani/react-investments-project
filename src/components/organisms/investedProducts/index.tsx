@@ -1,6 +1,7 @@
-import { Grid } from "@mui/material"
+import { Container, Grid } from "@mui/material"
 import { useEffect, useState } from "react"
 import { trendApi } from '../../../services/trend.service';
+import { userApi } from "../../../services/user.service";
 import { InvestedCard } from '../../molecules/investedCard'
 import { TableHeaderAtom } from '../../molecules/tableHeader'
 
@@ -10,15 +11,31 @@ interface IInvestedTrend {
     amount: number
 }
 
+interface IFetchResult {
+    checkingAccountAmount: number,
+    positions: Array<IInvestedTrend>,
+    consolidated: number,
+    limit: number,
+    page: number,
+    pages: number
+}
+
 export const InvestedProducts = () => {
 
-    const [trends, setTrends] = useState<IInvestedTrend[]>([])
+    const [result, setResult] = useState<IFetchResult>({
+        checkingAccountAmount: 0,
+        positions: [],
+        consolidated: 0,
+        limit: 0,
+        page: 0,
+        pages: 0,
+    })
 
     useEffect(() => {
-        if (trends.length === 0) {
+        if (result.positions.length === 0) {
             const fetchData = async () => {
-                return [
-                    {
+                return {
+                    positions: [{
                         "_id": "63866c01025224375ab69aa3",
                         "symbol": "TORO4",
                         "currentPrice": 115.98,
@@ -90,10 +107,18 @@ export const InvestedProducts = () => {
                         "currentPrice": 40.77,
                         "amount": 1
                     }
-                ]
+                    ],
+                    limit: 5,
+                    pages: 2,
+                    page: 1
+                }
             }
+            // const fetchData = async () => {
+            //     return await userApi.findPosition('08000700034', 5, 0)
+            // }
             fetchData().then((result: any): any => {
-                setTrends(result)
+                console.log(result)
+                setResult(result)
                 console.log('aaa')
             }).catch((error) => {
                 console.log(error)
@@ -102,17 +127,17 @@ export const InvestedProducts = () => {
     });
 
     return (
-        <>
-            <TableHeaderAtom>Seus investimentos</TableHeaderAtom>
+        <Container fixed>
+            <TableHeaderAtom limit={result.limit} pages={result.pages}>Seus investimentos</TableHeaderAtom>
             <Grid container spacing={2}>
                 {
-                    trends.map((trend: IInvestedTrend) => (
+                    result.positions.map((trend: IInvestedTrend) => (
                         <Grid item xs={4} >
                             <InvestedCard name={trend.symbol} price={trend.currentPrice} amount={trend.amount}></InvestedCard>
                         </Grid>)
                     )
                 }
             </Grid>
-        </>
+        </Container>
     )
 }

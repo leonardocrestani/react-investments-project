@@ -1,8 +1,13 @@
-import { Card, CardActions, CardContent, Typography } from "@mui/material"
+import { Card, CardActions, CardContent, Divider, Typography } from "@mui/material"
+import { useState } from "react"
 import { SubmitButtonAtom } from '../../atoms/submitButton'
 import { ISubmitButton } from "../form"
+import { BuyModal } from '../buyModal'
 
 export const InvestmentCard = ({ name, price }: { name: string, price: number }) => {
+
+    const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false)
 
     const submitButton: ISubmitButton = {
         method: 'POST',
@@ -10,11 +15,22 @@ export const InvestmentCard = ({ name, price }: { name: string, price: number })
     }
 
     const onClick = async (): Promise<void> => {
-        console.log('clicou')
+        setLoading(true)
+
     }
 
+    const handleClickOpen = () => {
+        setLoading(true)
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+        setLoading(false)
+    };
+
     return (
-        <Card sx={{ minWidth: 275 }} >
+        <Card sx={{ minWidth: 275 }} style={{ textAlign: 'center', backgroundColor: '#FEFEFE' }}>
             <CardContent >
                 <Typography gutterBottom variant="h4" component="div">
                     {name}
@@ -23,9 +39,14 @@ export const InvestmentCard = ({ name, price }: { name: string, price: number })
                     {`Valor: ${price} R$`}
                 </Typography>
             </CardContent>
-            <CardActions>
-                <SubmitButtonAtom children={submitButton.label} onClick={onClick} loading={false}></SubmitButtonAtom>
+            <Divider light style={{ margin: '0px 46px' }} />
+            <CardActions style={{
+                padding: '16px',
+                justifyContent: "center"
+            }}>
+                <SubmitButtonAtom children={submitButton.label} onClick={handleClickOpen} loading={loading}></SubmitButtonAtom>
             </CardActions>
+            <BuyModal open={open} handleClose={handleClose}>Comprar ação</BuyModal>
         </Card >
     )
 }

@@ -20,8 +20,8 @@ export const Login = () => {
 
     return (
         <Grid container spacing={2} direction="column" alignItems="center" justifyContent='center' >
-            <Form initialFormFields={initialFormFields} submitButton={submitButton} formTitle={"Login"}/>
-            <Grid item xs={12} style={{padding: "0px", marginTop: "14px"}}>
+            <Form initialFormFields={initialFormFields} submitButton={submitButton} formTitle={"Login"} />
+            <Grid item xs={12} style={{ padding: "0px", marginTop: "14px" }}>
                 <LinkAtom path="/register">Cadastre-se</LinkAtom>
             </Grid>
         </Grid>
