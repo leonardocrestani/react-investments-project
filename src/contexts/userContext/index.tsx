@@ -43,11 +43,13 @@ export default function UserProvider({ children }: { children: any }) {
 
     const login = (full_name: string, cpf: string, account: string, checkingAccountAmount: number, positions: any, consolidated: number) => {
         setUserData({ full_name, cpf, account, checkingAccountAmount, positions, consolidated });
+        localStorage.setItem("isAuthenticated", "true");
         console.log("chamou login")
     }
 
     const logout = () => {
         setUserData({ full_name: "", cpf: "", account: "", checkingAccountAmount: 0, positions: [], consolidated: 0 });
+        localStorage.clear();
         console.log('chamou logout')
     }
 

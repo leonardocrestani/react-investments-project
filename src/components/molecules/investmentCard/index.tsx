@@ -27,10 +27,21 @@ export const InvestmentCard = ({ name, price }: { name: string, price: number })
     const handleClose = () => {
         setOpen(false);
         setLoading(false)
+        setIsHovering(false)
+    };
+
+    const [isHovering, setIsHovering] = useState(false);
+
+    const handleMouseOver = () => {
+        setIsHovering(true);
+    };
+
+    const handleMouseOut = () => {
+        setIsHovering(false);
     };
 
     return (
-        <Card sx={{ minWidth: 275 }} style={{ textAlign: 'center', backgroundColor: '#FEFEFE' }}>
+        <Card sx={{ minWidth: 275 }} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={{ textAlign: 'center', backgroundColor: '#FEFEFE', border: '0.5px solid gainsboro', transition: 'transform .2s', transform: `${isHovering ? 'scale(1.05)' : 'scale(1)'}` }}>
             <CardContent >
                 <Typography gutterBottom variant="h4" component="div">
                     {name}
@@ -46,7 +57,7 @@ export const InvestmentCard = ({ name, price }: { name: string, price: number })
             }}>
                 <SubmitButtonAtom children={submitButton.label} onClick={handleClickOpen} loading={loading}></SubmitButtonAtom>
             </CardActions>
-            <BuyModal open={open} handleClose={handleClose}>Comprar ação</BuyModal>
+            <BuyModal open={open} handleClose={handleClose}>{`Comprar ação ${name}`}</BuyModal>
         </Card >
     )
 }

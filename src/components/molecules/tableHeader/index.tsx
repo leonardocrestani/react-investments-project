@@ -3,7 +3,7 @@ import { TableTitle } from "../../atoms/tableTitle"
 import { TableLimitField } from "../../atoms/tableLimitField"
 import { TablePageField } from "../../atoms/tablePageField"
 
-export const TableHeaderAtom = ({ children, limit, pages }: { children: string, limit: number, pages: number }) => {
+export const TableHeaderAtom = ({ children, pages, handleChange }: { children: string, pages: number, handleChange: (arg: any) => void }) => {
 
     return (
         <Grid container spacing={2} direction="row" alignItems="center" justifyContent='center' style={{ margin: '24px 0px' }}>
@@ -12,10 +12,10 @@ export const TableHeaderAtom = ({ children, limit, pages }: { children: string, 
             </Grid>
             <Grid item xs={6} container justifyContent="right" style={{ padding: '0px', paddingRight: '16px' }}>
                 <Grid item xs={2} container justifyContent="right" style={{ padding: '0px', paddingRight: '16px' }}>
-                    <TableLimitField limit={limit}>Quantidade</TableLimitField>
+                    <TableLimitField handleChange={handleChange}>Quantidade</TableLimitField>
                 </Grid>
                 <Grid item xs={2} container justifyContent="right" style={{ padding: '0px', paddingRight: '16px' }}>
-                    <TablePageField pages={pages}>Página</TablePageField>
+                    <TablePageField pages={pages} handleChange={handleChange}>Página</TablePageField>
                 </Grid>
             </Grid>
         </Grid >

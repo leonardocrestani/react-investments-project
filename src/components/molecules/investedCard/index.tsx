@@ -1,9 +1,20 @@
 import { Card, CardContent, Divider, Typography } from "@mui/material"
+import { useState } from "react";
 
 export const InvestedCard = ({ name, price, amount }: { name: string, price: number, amount: number }) => {
 
+    const [isHovering, setIsHovering] = useState(false);
+
+    const handleMouseOver = () => {
+        setIsHovering(true);
+    };
+
+    const handleMouseOut = () => {
+        setIsHovering(false);
+    };
+
     return (
-        <Card sx={{ minWidth: 275 }} style={{ textAlign: 'center', backgroundColor: '#FEFEFE' }} >
+        <Card sx={{ minWidth: 275 }} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={{ textAlign: 'center', backgroundColor: '#FEFEFE', border: '0.5px solid gainsboro', transition: 'transform .2s', transform: `${isHovering ? 'scale(1.05)' : 'scale(1)'}` }} >
             <CardContent >
                 <Typography gutterBottom variant="h4" component="div" style={{ marginBottom: '10px' }}>
                     {name}
