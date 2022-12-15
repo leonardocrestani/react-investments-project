@@ -38,8 +38,6 @@ export const InvestmentsModal = () => {
     };
 
     useEffect(() => {
-        console.log(pageValue, 'effect')
-        console.log(limitValue, 'effect')
         const fetchData = async () => {
             return {
                 trends: [{
@@ -125,7 +123,6 @@ export const InvestmentsModal = () => {
         // }
         fetchData().then((result: any): any => {
             setResult(result)
-            console.log('aaa')
         }).catch((error) => {
             console.log(error)
         })

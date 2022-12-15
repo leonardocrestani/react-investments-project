@@ -44,8 +44,6 @@ export const InvestedProducts = () => {
     };
 
     useEffect(() => {
-        console.log(pageValue, 'effect')
-        console.log(limitValue, 'effect')
         const fetchData = async () => {
             return {
                 positions: [{
@@ -131,8 +129,6 @@ export const InvestedProducts = () => {
         // }
         fetchData().then((result: any): any => {
             setResult(result)
-            console.log('aaa')
-            console.log(result)
         }).catch((error) => {
             console.log(error)
         })

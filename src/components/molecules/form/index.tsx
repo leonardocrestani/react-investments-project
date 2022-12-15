@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { SubmitButtonAtom } from '../../atoms/submitButton';
 import { FormTextFieldAtom } from '../../atoms/formTextField';
 import { userApi } from '../../../services/user.service';
+import { orderApi } from '../../../services/order.service'
 import { useUser } from '../../../contexts/userContext'
-import { useNavigate } from 'react-router-dom';
 import { format } from '@fnando/cpf';
 
 export interface FormField {
@@ -19,15 +19,11 @@ export interface ISubmitButton {
     label: string,
 }
 
-export const Form = ({ initialFormFields, submitButton, formTitle }: { initialFormFields: FormField[], submitButton: ISubmitButton, formTitle: string }) => {
-
-    const { login } = useUser()
+export const Form = ({ initialFormFields, submitButton, formTitle, submit }: { initialFormFields: FormField[], submitButton: ISubmitButton, formTitle: string, submit: (args: any) => void }) => {
 
     const [formFields, setFormFields] = useState<FormField[]>(initialFormFields)
 
     const [loading, setLoading] = useState<boolean>(false)
-
-    let navigate = useNavigate()
 
     const onChange = (name: string, value: string) => {
         const newFormFields = formFields.reduce((acc: FormField[], field: FormField) => {
@@ -42,48 +38,8 @@ export const Form = ({ initialFormFields, submitButton, formTitle }: { initialFo
 
     const submitForm = async (): Promise<any> => {
         setLoading(true)
-        if (submitButton.label === 'Entrar') {
-            let formPayload: any = formFields.find(field => {
-                if (field.name === "cpf") {
-                    return field
-                }
-                else {
-                    return formFields
-                }
-            })
-            try {
-                const { data } = await userApi.get(formPayload.value)
-                console.log(data)
-                if (data) {
-                    login(data.full_name, format(data.cpf), data.account, data.checkingAccountAmount.toLocaleString('pt-BR'), data.positions, data.consolidated.toLocaleString('pt-BR'))
-                    navigate("/dashboard")
-                    setLoading(false)
-                }
-            }
-            catch (error) {
-                console.log(error)
-                //modal para error
-                setLoading(false)
-            }
-        }
-        if (submitButton.label === 'Cadastrar') {
-            const formPayload: any = formFields.reduce(
-                (obj, field) => Object.assign(obj, { [field.name]: field.value }), {});
-            console.log(formPayload)
-            try {
-                const { data } = await userApi.create(formPayload)
-                console.log('criou')
-                if (data) {
-                    login(data.full_name, data.cpf, data.account, data.checkingAccountAmount, data.positions, data.consolidated)
-                    navigate("/dashboard")
-                    setLoading(false)
-                }
-            }
-            catch (error) {
-                console.log(error)
-                setLoading(false)
-            }
-        }
+        await submit({ fields: formFields })
+        setLoading(false)
     }
 
     return (

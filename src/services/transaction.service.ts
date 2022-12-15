@@ -8,7 +8,6 @@ interface transactionPayload {
 
 export const transactionApi = {
     create: async (payload: transactionPayload) => {
-        console.log(payload)
         const transaction = await axios.post('http://localhost:3003/spb/events', payload)
         return transaction
     }

@@ -12,7 +12,6 @@ export const userApi = {
         return user
     },
     create: async (payload: userPayload) => {
-        console.log(payload)
         const user = await axios.post('http://localhost:3003/user', payload)
         return user
     },

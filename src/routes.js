@@ -10,8 +10,8 @@ const RoutesApp = () => {
         <Router>
             <Routes>
                 <Route exact path='/login' element={<LoginPage />} />
-                <Route exact path='/dashboard' element={<RequireAuth><DashboardPage /></RequireAuth>} />
-                <Route exact path='/products' element={<ProductsPage />} />
+                <Route exact path='/dashboard' element={/*<RequireAuth>*/<DashboardPage />/*</RequireAuth>*/} />
+                <Route exact path='/products' element={/*<RequireAuth>*/<ProductsPage />/*</RequireAuth>*/} />
                 <Route exact path='/register' element={<RegisterPage />} />
             </Routes>
         </Router>

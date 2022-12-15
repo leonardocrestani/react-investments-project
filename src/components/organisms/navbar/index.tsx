@@ -28,7 +28,7 @@ export const Navbar = () => {
                             <Typography textAlign="center">Produtos</Typography>
                         </MenuItem>
                     </NavLink>
-                    <NavLink to="/" onClick={logout} style={{ textDecoration: "none", color: "white", marginLeft: "auto" }}>
+                    <NavLink to="/login" onClick={logout} style={{ textDecoration: "none", color: "white", marginLeft: "auto" }}>
                         <MenuItem>
                             <Typography textAlign="center">Sair</Typography>
                         </MenuItem>
