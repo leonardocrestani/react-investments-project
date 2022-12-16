@@ -3,10 +3,15 @@ import { Form, FormField, ISubmitButton } from '../../molecules/form'
 import { SubmitButtonAtom } from '../../atoms/submitButton'
 import { orderApi } from "../../../services/order.service"
 import { useUser } from "../../../contexts/userContext"
+import { ErrorModal } from "../errorModal"
+import { useState } from "react"
 
 export const BuyModal = ({ children, open, handleClose }: { children: string, open: boolean, handleClose: () => void }) => {
 
     const { cpf } = useUser()
+
+    const [showErrorModal, setShowErrorModal] = useState<boolean>(false)
+    const [errorMessage, setErrorMessage] = useState<string>('')
 
     const initialFormFields: FormField[] = [
         {
@@ -28,21 +33,38 @@ export const BuyModal = ({ children, open, handleClose }: { children: string, op
         formPayload = Object.assign(formPayload, { symbol: children.split(' ')[2] })
         formPayload.amount = parseInt(formPayload.amount)
         try {
-            const { data } = await orderApi.create(formPayload, cpf)
+            await orderApi.create(formPayload, cpf)
         }
-        catch (error) {
-            console.log(error)
+        catch (error: any) {
+            if (error.response.data.statusCode === 400) {
+                setErrorMessage('Houve um erro inesperado')
+            }
+            if (error.response.data.statusCode === 404) {
+                setErrorMessage('Posição não encontrada')
+            }
+            if (error.response.data.statusCode === 403) {
+                setErrorMessage('Saldo insuficiente')
+            }
+            setShowErrorModal(true)
         }
     }
 
+    const handleCloseError = () => {
+        setShowErrorModal(false);
+    };
+
     return (
-        <Dialog open={open} onClose={handleClose}>
-            <DialogTitle style={{ paddingBottom: '0px' }}>{children}</DialogTitle>
-            <DialogContent>
-                <Form initialFormFields={initialFormFields} submitButton={submitButton} formTitle={""} submit={submitBuy}></Form>
-                <br />
-                <SubmitButtonAtom onClick={handleClose} loading={false}>Cancelar</SubmitButtonAtom>
-            </DialogContent>
-        </Dialog>
+        <>
+            {
+                !showErrorModal ? <Dialog open={open} onClose={handleClose}>
+                    <DialogTitle style={{ paddingBottom: '0px' }}>{children}</DialogTitle>
+                    <DialogContent>
+                        <Form initialFormFields={initialFormFields} submitButton={submitButton} formTitle={""} submit={submitBuy}></Form>
+                        <br />
+                        <SubmitButtonAtom onClick={handleClose} disabled={false} loading={false}>Cancelar</SubmitButtonAtom>
+                    </DialogContent>
+                </Dialog> : <ErrorModal open={showErrorModal} handleClose={handleCloseError}><b>{errorMessage}</b></ErrorModal>
+            }
+        </>
     )
 }

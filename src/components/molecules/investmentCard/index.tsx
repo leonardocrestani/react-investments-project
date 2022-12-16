@@ -55,7 +55,7 @@ export const InvestmentCard = ({ name, price }: { name: string, price: number })
                 padding: '16px',
                 justifyContent: "center"
             }}>
-                <SubmitButtonAtom children={submitButton.label} onClick={handleClickOpen} loading={loading}></SubmitButtonAtom>
+                <SubmitButtonAtom children={submitButton.label} disabled={false} onClick={handleClickOpen} loading={loading}></SubmitButtonAtom>
             </CardActions>
             <BuyModal open={open} handleClose={handleClose}>{`Comprar ação ${name}`}</BuyModal>
         </Card >

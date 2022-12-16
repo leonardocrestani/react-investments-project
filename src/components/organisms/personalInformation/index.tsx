@@ -70,7 +70,7 @@ export const PersonalInformation = () => {
                             <AccountBalanceWalletIcon />
                         </ListItemAvatarAtom>
                         <ListItemText primary="Saldo" secondary={`${checkingAccountAmount} R$`} />
-                        <SubmitButtonAtom onClick={handleClickOpen} loading={loading}>Depositar</SubmitButtonAtom>
+                        <SubmitButtonAtom onClick={handleClickOpen} disabled={false} loading={loading}>Depositar</SubmitButtonAtom>
                         <DepositModal open={open} handleClose={handleClose}>Depósito</DepositModal>
                     </ListItem>
                     <Divider variant="inset" component="li" />

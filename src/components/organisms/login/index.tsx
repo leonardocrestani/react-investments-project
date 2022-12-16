@@ -5,6 +5,8 @@ import { userApi } from "../../../services/user.service"
 import { useNavigate } from 'react-router-dom';
 import { format } from "@fnando/cpf";
 import { useUser } from "../../../contexts/userContext";
+import { ErrorModal } from '../../molecules/errorModal'
+import { useState } from "react";
 
 const initialFormFields: FormField[] = [
     {
@@ -26,6 +28,13 @@ export const Login = () => {
 
     let navigate = useNavigate()
 
+    const [showErrorModal, setShowErrorModal] = useState<boolean>(false)
+    const [errorMessage, setErrorMessage] = useState<string>('')
+
+    const handleClose = () => {
+        setShowErrorModal(false);
+    };
+
     const submitLogin = async (args: any) => {
         let formPayload: any = args.fields.find((field: any) => {
             if (field.name === "cpf") {
@@ -42,9 +51,14 @@ export const Login = () => {
                 navigate("/dashboard")
             }
         }
-        catch (error) {
-            console.log(error)
-            //modal para error
+        catch (error: any) {
+            /*if (error.response.data.statusCode === 400) {
+                setErrorMessage('Houve um erro inesperado')
+            }
+            if (error.response.data.statusCode === 404) {
+                setErrorMessage('Usuario não encontrado')
+            }*/
+            setShowErrorModal(true)
         }
     }
 
@@ -54,6 +68,7 @@ export const Login = () => {
             <Grid item xs={12} style={{ padding: "0px", marginTop: "14px" }}>
                 <LinkAtom path="/register">Cadastre-se</LinkAtom>
             </Grid>
+            <ErrorModal open={showErrorModal} handleClose={handleClose}><b>{errorMessage}</b></ErrorModal>
         </Grid>
     )
 }

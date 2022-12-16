@@ -1,5 +1,5 @@
 import Grid from '@mui/material/Grid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitButtonAtom } from '../../atoms/submitButton';
 import { FormTextFieldAtom } from '../../atoms/formTextField';
 import { userApi } from '../../../services/user.service';
@@ -25,6 +25,12 @@ export const Form = ({ initialFormFields, submitButton, formTitle, submit }: { i
 
     const [loading, setLoading] = useState<boolean>(false)
 
+    const [buttonDisabled, setButtonDisabled] = useState<boolean>(true)
+
+    useEffect(() => {
+        setButtonDisabled(buttonDisabled)
+    }, [buttonDisabled])
+
     const onChange = (name: string, value: string) => {
         const newFormFields = formFields.reduce((acc: FormField[], field: FormField) => {
             if (field.name === name) return [...acc, {
@@ -34,6 +40,14 @@ export const Form = ({ initialFormFields, submitButton, formTitle, submit }: { i
             return [...acc, field]
         }, [])
         setFormFields(newFormFields)
+        newFormFields.forEach(field => {
+            if (field.value.length === 0) {
+                setButtonDisabled(true)
+            }
+            else {
+                setButtonDisabled(false)
+            }
+        })
     }
 
     const submitForm = async (): Promise<any> => {
@@ -55,7 +69,7 @@ export const Form = ({ initialFormFields, submitButton, formTitle, submit }: { i
                 )
             }
             <Grid item xs={12} style={{ padding: "0px", marginTop: "14px" }}>
-                <SubmitButtonAtom children={submitButton.label} onClick={submitForm} loading={loading}></SubmitButtonAtom>
+                <SubmitButtonAtom children={submitButton.label} disabled={buttonDisabled} onClick={submitForm} loading={loading}></SubmitButtonAtom>
             </Grid>
         </>
     )

@@ -1,8 +1,10 @@
 import { Grid } from "@mui/material"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useUser } from "../../../contexts/userContext"
 import { userApi } from "../../../services/user.service"
 import { LinkAtom } from "../../atoms/link"
+import { ErrorModal } from "../../molecules/errorModal"
 import { Form, FormField, ISubmitButton } from "../../molecules/form"
 
 const initialFormFields: FormField[] = [
@@ -37,6 +39,13 @@ export const Register = () => {
 
     let navigate = useNavigate()
 
+    const [showErrorModal, setShowErrorModal] = useState<boolean>(false)
+    const [errorMessage, setErrorMessage] = useState<string>('')
+
+    const handleClose = () => {
+        setShowErrorModal(false);
+    };
+
     const submitRegister = async (args: any) => {
         const formPayload: any = args.fields.reduce(
             (obj: any, field: any) => Object.assign(obj, { [field.name]: field.value }), {});
@@ -47,8 +56,17 @@ export const Register = () => {
                 navigate("/dashboard")
             }
         }
-        catch (error) {
-            console.log(error)
+        catch (error: any) {
+            if (error.response.data.statusCode === 400) {
+                setErrorMessage('Houve um erro inesperado')
+            }
+            if (error.response.data.statusCode === 409) {
+                setErrorMessage('Usuario já cadastrado')
+            }
+            if (error.response.data.statusCode === 403) {
+                setErrorMessage('Número de conta inválido')
+            }
+            setShowErrorModal(true)
         }
     }
 
@@ -56,8 +74,9 @@ export const Register = () => {
         <Grid container spacing={2} direction="column" alignItems="center" justifyContent='center' >
             <Form initialFormFields={initialFormFields} submitButton={submitButton} formTitle={"Cadastro"} submit={submitRegister} />
             <Grid item xs={12} style={{ padding: "0px", marginTop: "14px" }}>
-                <LinkAtom path="/">Login</LinkAtom>
+                <LinkAtom path="/login">Login</LinkAtom>
             </Grid>
+            <ErrorModal open={showErrorModal} handleClose={handleClose}><b>{errorMessage}</b></ErrorModal>
         </Grid>
     )
 }

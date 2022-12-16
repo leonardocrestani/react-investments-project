@@ -4,10 +4,15 @@ import { SubmitButtonAtom } from '../../atoms/submitButton'
 import { transactionApi } from "../../../services/transaction.service"
 import { useUser } from "../../../contexts/userContext"
 import { strip } from "@fnando/cpf"
+import { useState } from "react"
+import { ErrorModal } from "../errorModal"
 
 export const DepositModal = ({ children, open, handleClose }: { children: string, open: boolean, handleClose: () => void }) => {
 
     const { cpf } = useUser()
+
+    const [showErrorModal, setShowErrorModal] = useState<boolean>(false)
+    const [errorMessage, setErrorMessage] = useState<string>('')
 
     const initialFormFields: FormField[] = [
         {
@@ -29,21 +34,38 @@ export const DepositModal = ({ children, open, handleClose }: { children: string
         const payload = Object.assign(formPayload, { event: "TRANSFER", document: strip(cpf) })
         payload.amount = parseFloat(payload.amount)
         try {
-            const { data } = await transactionApi.create(payload)
+            await transactionApi.create(payload)
         }
-        catch (error) {
-            console.log(error)
+        catch (error: any) {
+            if (error.response.data.statusCode === 400) {
+                setErrorMessage('Houve um erro inesperado')
+            }
+            if (error.response.data.statusCode === 404) {
+                setErrorMessage('Usuario não encontrado')
+            }
+            if (error.response.data.statusCode === 403) {
+                setErrorMessage('CPF inválido')
+            }
+            setShowErrorModal(true)
         }
     }
 
+    const handleCloseError = () => {
+        setShowErrorModal(false);
+    };
+
     return (
-        <Dialog open={open} onClose={handleClose}>
-            <DialogTitle style={{ paddingBottom: '0px' }}>{children}</DialogTitle>
-            <DialogContent>
-                <Form initialFormFields={initialFormFields} submitButton={submitButton} formTitle={""} submit={submitDeposit}></Form>
-                <br />
-                <SubmitButtonAtom onClick={handleClose} loading={false}>Cancelar</SubmitButtonAtom>
-            </DialogContent>
-        </Dialog>
+        <>
+            {
+                !showErrorModal ? <Dialog open={open} onClose={handleClose}>
+                    <DialogTitle style={{ paddingBottom: '0px' }}>{children}</DialogTitle>
+                    <DialogContent>
+                        <Form initialFormFields={initialFormFields} submitButton={submitButton} formTitle={""} submit={submitDeposit}></Form>
+                        <br />
+                        <SubmitButtonAtom onClick={handleClose} disabled={false} loading={false}>Cancelar</SubmitButtonAtom>
+                    </DialogContent>
+                </Dialog> : <ErrorModal open={showErrorModal} handleClose={handleCloseError}><b>{errorMessage}</b></ErrorModal>
+            }
+        </>
     )
 }
