@@ -9,6 +9,7 @@ interface userDataContextType {
     consolidated: number
     login: (full_name: string, cpf: string, account: string, checkingAccountAmount: number, positions: any, consolidated: number) => void;
     logout: () => void;
+    update: (params: any) => void;
 }
 
 const userDataContextDefaultValues: userDataContextType = {
@@ -20,6 +21,7 @@ const userDataContextDefaultValues: userDataContextType = {
     consolidated: 0,
     login: () => { },
     logout: () => { },
+    update: () => { },
 };
 
 const UserContext = createContext<userDataContextType>(userDataContextDefaultValues);
@@ -51,6 +53,10 @@ export default function UserProvider({ children }: { children: any }) {
         localStorage.clear();
     }
 
+    const update = (params: any) => {
+        setUserData(params)
+    }
+
     const values = {
         full_name,
         cpf,
@@ -59,7 +65,8 @@ export default function UserProvider({ children }: { children: any }) {
         positions,
         consolidated,
         login,
-        logout
+        logout,
+        update
     }
 
     return (

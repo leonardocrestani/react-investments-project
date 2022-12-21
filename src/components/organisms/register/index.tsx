@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material"
+import { Fab, Grid } from "@mui/material"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useUser } from "../../../contexts/userContext"
@@ -71,8 +71,8 @@ export const Register = () => {
     }
 
     return (
-        <Grid container spacing={2} direction="column" alignItems="center" justifyContent='center' >
-            <Form initialFormFields={initialFormFields} submitButton={submitButton} formTitle={"Cadastro"} submit={submitRegister} />
+        <Grid  container boxShadow={3} spacing={2} direction="column" alignItems="center" justifyContent='center' style={{ padding: '40px', maxWidth: '420px', backgroundColor: '#FCFCFC', borderRadius: '24px' }} >
+            <Form initialFormFields={initialFormFields} submitButton={submitButton} formTitle={"Cadastro"} formSubtitle={<></>} submit={submitRegister} />
             <Grid item xs={12} style={{ padding: "0px", marginTop: "14px" }}>
                 <LinkAtom path="/login">Login</LinkAtom>
             </Grid>

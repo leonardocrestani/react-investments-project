@@ -2,10 +2,6 @@ import Grid from '@mui/material/Grid';
 import { useEffect, useState } from 'react';
 import { SubmitButtonAtom } from '../../atoms/submitButton';
 import { FormTextFieldAtom } from '../../atoms/formTextField';
-import { userApi } from '../../../services/user.service';
-import { orderApi } from '../../../services/order.service'
-import { useUser } from '../../../contexts/userContext'
-import { format } from '@fnando/cpf';
 
 export interface FormField {
     value: string,
@@ -19,7 +15,7 @@ export interface ISubmitButton {
     label: string,
 }
 
-export const Form = ({ initialFormFields, submitButton, formTitle, submit }: { initialFormFields: FormField[], submitButton: ISubmitButton, formTitle: string, submit: (args: any) => void }) => {
+export const Form = ({ initialFormFields, submitButton, formTitle, formSubtitle, submit }: { initialFormFields: FormField[], submitButton: ISubmitButton, formTitle: string, formSubtitle: any, submit: (args: any) => void }) => {
 
     const [formFields, setFormFields] = useState<FormField[]>(initialFormFields)
 
@@ -58,8 +54,13 @@ export const Form = ({ initialFormFields, submitButton, formTitle, submit }: { i
 
     return (
         <>
-            <Grid item xs={12} style={{ padding: "0px" }}>
-                <h2>{formTitle}</h2>
+            <Grid container direction="column" alignItems="center" justifyContent='center' style={{ padding: "0px" }}>
+                <Grid item xs={12} style={{ padding: "0px" }}>
+                    <h2 style={{ marginTop: '0px', fontWeight: '500' }}>{formTitle}</h2>
+                </Grid>
+                <Grid item xs={12} style={{ padding: "0px" }}>
+                    {formSubtitle}
+                </Grid>
             </Grid>
             {
                 formFields.map((field: FormField) => (

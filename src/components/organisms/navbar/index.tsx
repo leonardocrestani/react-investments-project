@@ -9,8 +9,7 @@ export const Navbar = () => {
     const { logout } = useUser()
 
     return (
-        <Box sx={{ flexGrow: 1 }} style={{ marginBottom: '26px', borderBottom: '4px solid #A600FF' }}>
-            <AppBar position="static" color="primary" style={{ backgroundColor: '#2A2929', padding: '4px 138px' }}>
+            <AppBar position="sticky" color="primary" style={{ backgroundColor: '#2A2929', padding: '4px 138px', marginBottom: '26px', borderTop: '5px solid #1681E6', }}>
                 <Toolbar>
                     <NavLink to="/dashboard" style={{ textDecoration: "none", color: "white" }}>
                         <MenuItem>
@@ -35,6 +34,5 @@ export const Navbar = () => {
                     </NavLink>
                 </Toolbar>
             </AppBar>
-        </Box>
     )
 }

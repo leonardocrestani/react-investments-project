@@ -5,7 +5,7 @@ export const LinkAtom = ({ children, path }: { children: string, path: string })
         <Link
             variant="body2"
             href={path}
-            style={{ color: '#00E2CA', textDecoration: 'none' }}
+            style={{ color: '#1681E6', textDecoration: 'none' }}
         >
             {children}
         </Link >

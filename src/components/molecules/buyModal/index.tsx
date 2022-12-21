@@ -36,7 +36,7 @@ export const BuyModal = ({ children, open, handleClose }: { children: string, op
             await orderApi.create(formPayload, cpf)
         }
         catch (error: any) {
-            if (error.response.data.statusCode === 400) {
+            if (error.response.data.statusCode === 400 || error.response.data.statusCode === 500) {
                 setErrorMessage('Houve um erro inesperado')
             }
             if (error.response.data.statusCode === 404) {
@@ -59,7 +59,7 @@ export const BuyModal = ({ children, open, handleClose }: { children: string, op
                 !showErrorModal ? <Dialog open={open} onClose={handleClose}>
                     <DialogTitle style={{ paddingBottom: '0px' }}>{children}</DialogTitle>
                     <DialogContent>
-                        <Form initialFormFields={initialFormFields} submitButton={submitButton} formTitle={""} submit={submitBuy}></Form>
+                        <Form initialFormFields={initialFormFields} submitButton={submitButton} formTitle={""} formSubtitle={""} submit={submitBuy}></Form>
                         <br />
                         <SubmitButtonAtom onClick={handleClose} disabled={false} loading={false}>Cancelar</SubmitButtonAtom>
                     </DialogContent>
