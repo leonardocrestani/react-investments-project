@@ -15,8 +15,12 @@ export const userApi = {
         const user = await axios.post('http://localhost:3003/user', payload)
         return user
     },
+    findAllPositionsByUser: async (cpf: string) => {
+        const userPosition = await axios.get(`http://localhost:3003/userPosition/all/${cpf}`)
+        return userPosition
+    },
     findPosition: async (cpf: string, limit: number, offset: number) => {
-        const userPosition = await axios.get(`http://localhost:3003/userPosition/${cpf}?limit=${limit}&offset=${offset}`)
+        const userPosition = await axios.get(`http://localhost:3003/userPosition/paginated/${cpf}?limit=${limit}&offset=${offset}`)
         return userPosition
     }
 }

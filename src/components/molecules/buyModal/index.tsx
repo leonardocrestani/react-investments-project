@@ -5,10 +5,11 @@ import { orderApi } from "../../../services/order.service"
 import { useUser } from "../../../contexts/userContext"
 import { ErrorModal } from "../errorModal"
 import { useState } from "react"
+import { strip } from "@fnando/cpf"
 
 export const BuyModal = ({ children, open, handleClose }: { children: string, open: boolean, handleClose: () => void }) => {
 
-    const { cpf } = useUser()
+    const { user } = useUser()
 
     const [showErrorModal, setShowErrorModal] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<string>('')
@@ -33,7 +34,8 @@ export const BuyModal = ({ children, open, handleClose }: { children: string, op
         formPayload = Object.assign(formPayload, { symbol: children.split(' ')[2] })
         formPayload.amount = parseInt(formPayload.amount)
         try {
-            await orderApi.create(formPayload, cpf)
+            await orderApi.create(formPayload, strip(user.cpf))
+            handleClose()
         }
         catch (error: any) {
             if (error.response.data.statusCode === 400 || error.response.data.statusCode === 500) {

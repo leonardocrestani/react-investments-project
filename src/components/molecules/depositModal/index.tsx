@@ -10,7 +10,7 @@ import { userApi } from "../../../services/user.service"
 
 export const DepositModal = ({ children, open, handleClose }: { children: string, open: boolean, handleClose: () => void }) => {
 
-    const { cpf, update } = useUser()
+    const { user, update } = useUser()
 
     const [showErrorModal, setShowErrorModal] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<string>('')
@@ -32,12 +32,11 @@ export const DepositModal = ({ children, open, handleClose }: { children: string
     const submitDeposit = async (args: any) => {
         const formPayload: any = args.fields.reduce(
             (obj: any, field: any) => Object.assign(obj, { [field.name]: field.value }), {});
-        const payload = Object.assign(formPayload, { event: "TRANSFER", document: strip(cpf) })
+        const payload = Object.assign(formPayload, { event: "TRANSFER", document: strip(user.cpf) })
         payload.amount = parseFloat(payload.amount)
         try {
             await transactionApi.create(payload)
-            const { data } = await userApi.get(strip(cpf))
-            update({ checkingAccountAmount: data.checkingAccountAmount, consolidated: data.consolidated })
+            handleClose()
         }
         catch (error: any) {
             if (error.response.data.statusCode === 400) {

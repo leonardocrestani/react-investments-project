@@ -1,24 +1,30 @@
 import { createContext, useContext, useState } from "react";
 
-interface userDataContextType {
+interface user {
     full_name: string
     cpf: string
     account: string
     checkingAccountAmount: number
     positions: Array<any>
     consolidated: number
+}
+
+interface userDataContextType {
+    user: user,
     login: (full_name: string, cpf: string, account: string, checkingAccountAmount: number, positions: any, consolidated: number) => void;
     logout: () => void;
     update: (params: any) => void;
 }
 
 const userDataContextDefaultValues: userDataContextType = {
-    full_name: "",
-    cpf: "",
-    account: "",
-    checkingAccountAmount: 0,
-    positions: [],
-    consolidated: 0,
+    user: {
+        full_name: "",
+        cpf: "",
+        account: "",
+        checkingAccountAmount: 0,
+        positions: [],
+        consolidated: 0,
+    },
     login: () => { },
     logout: () => { },
     update: () => { },
@@ -27,7 +33,8 @@ const userDataContextDefaultValues: userDataContextType = {
 const UserContext = createContext<userDataContextType>(userDataContextDefaultValues);
 
 export default function UserProvider({ children }: { children: any }) {
-    const [{ full_name, cpf, account, checkingAccountAmount, positions, consolidated }, setUserData] = useState<{
+
+    const [user, setUserData] = useState<{
         full_name: string
         cpf: string
         account: string
@@ -58,12 +65,7 @@ export default function UserProvider({ children }: { children: any }) {
     }
 
     const values = {
-        full_name,
-        cpf,
-        account,
-        checkingAccountAmount,
-        positions,
-        consolidated,
+        user,
         login,
         logout,
         update

@@ -39,96 +39,14 @@ export const InvestmentsModal = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            return {
-                trends: [{
-                    "_id": "63866c01025224375ab69aa3",
-                    "symbol": "TORO4",
-                    "currentPrice": 115.98,
-                    "amount": 1
-                },
-                {
-                    "_id": "63866e4afb0035f3608e1381",
-                    "symbol": "PETR4",
-                    "currentPrice": 28.44,
-                    "amount": 1
-                },
-                {
-                    "_id": "63866e704453399233730af1",
-                    "symbol": "MGLU3",
-                    "currentPrice": 25.91,
-                    "amount": 1
-                },
-                {
-                    "_id": "63866ea741ec6ffecf0dde7c",
-                    "symbol": "VVAR3",
-                    "currentPrice": 25.91,
-                    "amount": 1
-                },
-                {
-                    "_id": "63866ec090b0c64481e85988",
-                    "symbol": "SANB11",
-                    "currentPrice": 40.77,
-                    "amount": 1
-                },
-                {
-                    "_id": "63866ea741ec6ffecf0dde7c",
-                    "symbol": "VVAR3",
-                    "currentPrice": 25.91,
-                    "amount": 1
-                },
-                {
-                    "_id": "63866ec090b0c64481e85988",
-                    "symbol": "SANB11",
-                    "currentPrice": 40.77,
-                    "amount": 1
-                },
-                {
-                    "_id": "63866ea741ec6ffecf0dde7c",
-                    "symbol": "VVAR3",
-                    "currentPrice": 25.91,
-                    "amount": 1
-                },
-                {
-                    "_id": "63866ec090b0c64481e85988",
-                    "symbol": "SANB11",
-                    "currentPrice": 40.77,
-                    "amount": 1
-                },
-                {
-                    "_id": "63866ec090b0c64481e85988",
-                    "symbol": "SANB11",
-                    "currentPrice": 40.77,
-                    "amount": 1
-                },
-                {
-                    "_id": "63866ea741ec6ffecf0dde7c",
-                    "symbol": "VVAR3",
-                    "currentPrice": 25.91,
-                    "amount": 1
-                },
-                {
-                    "_id": "63866ec090b0c64481e85988",
-                    "symbol": "SANB11",
-                    "currentPrice": 40.77,
-                    "amount": 1
-                }
-                ],
-                limit: 5,
-                pages: 2,
-                page: 1
-            }
+            return await trendApi.getAll(limitValue, pageValue)
         }
-        // const fetchData = async () => {
-        //     return await trendApi.getAll(limitValue, pageValue)
-        // }
         fetchData().then((result: any): any => {
-            setResult(result)
+            setResult(result.data)
         }).catch((error) => {
             console.log(error)
         })
     }, [pageValue, limitValue]);
-
-
 
     return (
         <Container fixed>
