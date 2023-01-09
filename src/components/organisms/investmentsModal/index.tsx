@@ -1,5 +1,6 @@
 import { Container, Grid } from "@mui/material"
 import { useEffect, useState } from "react"
+import { useUser } from "../../../contexts/userContext";
 import { trendApi } from '../../../services/trend.service';
 import { InvestmentCard } from '../../molecules/investmentCard'
 import { TableHeaderAtom } from '../../molecules/tableHeader'
@@ -17,6 +18,8 @@ interface IFetchResult {
 }
 
 export const InvestmentsModal = () => {
+
+    const { token } = useUser()
 
     const [result, setResult] = useState<IFetchResult>({
         trends: [],
@@ -39,14 +42,14 @@ export const InvestmentsModal = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            return await trendApi.getAll(limitValue, pageValue)
+            const token: any = localStorage.getItem('token')
+            return await trendApi.getAll(limitValue, pageValue, token)
         }
         fetchData().then((result: any): any => {
             setResult(result.data)
         }).catch((error) => {
-            console.log(error)
         })
-    }, [pageValue, limitValue]);
+    }, [pageValue, limitValue, token]);
 
     return (
         <Container fixed>

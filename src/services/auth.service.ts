@@ -8,8 +8,7 @@ interface authPayload {
 
 export const authApi = {
     auth: async (payload: authPayload) => {
-        const auth = await axios.post('http://localhost:3003/authenticate', payload)
-        console.log(auth)
+        const auth = await axios.post('http://localhost:3003/authenticate/login', payload)
         return auth
     }
 }

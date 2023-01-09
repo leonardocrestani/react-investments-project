@@ -7,8 +7,12 @@ interface transactionPayload {
 }
 
 export const transactionApi = {
-    create: async (payload: transactionPayload) => {
-        const transaction = await axios.post('http://localhost:3003/spb/events', payload)
+    create: async (payload: transactionPayload, token: string) => {
+        const transaction = await axios.post('http://localhost:3003/spb/events', payload, {
+            headers:{
+                Authorization: 'Bearer ' + token
+            }
+        })
         return transaction
     }
 }

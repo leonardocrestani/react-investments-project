@@ -45,9 +45,10 @@ export const Login = () => {
         const formPayload: any = args.fields.reduce(
             (obj: any, field: any) => Object.assign(obj, { [field.name]: field.value }), {});
         try {
-            const { data } = await authApi.auth(formPayload)
-            if (data) {
-                login(data.full_name, format(data.cpf), data.account, data.checkingAccountAmount.toLocaleString('pt-BR'), data.positions, data.consolidated.toLocaleString('pt-BR'))
+            const { data: {user, access_token} } = await authApi.auth(formPayload)
+            if (user) {
+                localStorage.setItem('token', access_token)
+                login(user.full_name, format(user.document), user.account, user.checkingAccountAmount.toLocaleString('pt-BR'), user.positions, user.consolidated.toLocaleString('pt-BR'))
                 navigate("/dashboard")
             }
         }

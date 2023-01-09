@@ -9,7 +9,7 @@ import { strip } from "@fnando/cpf"
 
 export const BuyModal = ({ children, open, handleClose }: { children: string, open: boolean, handleClose: () => void }) => {
 
-    const { user } = useUser()
+    const { user, token } = useUser()
 
     const [showErrorModal, setShowErrorModal] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<string>('')
@@ -34,7 +34,7 @@ export const BuyModal = ({ children, open, handleClose }: { children: string, op
         formPayload = Object.assign(formPayload, { symbol: children.split(' ')[2] })
         formPayload.amount = parseInt(formPayload.amount)
         try {
-            await orderApi.create(formPayload, strip(user.cpf))
+            await orderApi.create(formPayload, strip(user.document), token)
             handleClose()
         }
         catch (error: any) {
@@ -46,6 +46,9 @@ export const BuyModal = ({ children, open, handleClose }: { children: string, op
             }
             if (error.response.data.statusCode === 403) {
                 setErrorMessage('Saldo insuficiente')
+            }
+            if (error.response.data.statusCode === 401) {
+                setErrorMessage('Usuario não autenticado')
             }
             setShowErrorModal(true)
         }

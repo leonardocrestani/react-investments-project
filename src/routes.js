@@ -11,8 +11,8 @@ const RoutesApp = () => {
         <Router>
             <Routes>
                 <Route exact path='/login' element={<VerifyAuth><LoginPage /></VerifyAuth>} />
-                <Route exact path='/dashboard' element={/*<RequireAuth>*/<DashboardPage />/*</RequireAuth>*/} />
-                <Route exact path='/products' element={/*<RequireAuth>*/<ProductsPage />/*</RequireAuth>*/} />
+                <Route exact path='/dashboard' element={<RequireAuth><DashboardPage /></RequireAuth>} />
+                <Route exact path='/products' element={<RequireAuth><ProductsPage /></RequireAuth>} />
                 <Route exact path='/register' element={<VerifyAuth><RegisterPage /></VerifyAuth>} />
             </Routes>
         </Router>

@@ -16,7 +16,7 @@ import { strip, format } from "@fnando/cpf";
 
 export const PersonalInformation = () => {
 
-    const { user, update } = useUser()
+    const { user, update, token } = useUser()
 
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState<boolean>(false)
@@ -24,11 +24,19 @@ export const PersonalInformation = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            return await userApi.get(strip(user.cpf))
+            if(!user.document) {
+                const token: any = localStorage.getItem('token')
+                const document: any = localStorage.getItem('document')
+                return await userApi.get(strip(document), token)
+            }
+            else {
+                return await userApi.get(strip(user.document), token)
+            }
         }
         fetchData().then((result: any): any => {
-            const payload = Object.assign(result.data, {cpf: format(result.data.cpf), checkingAccountAmount: result.data.checkingAccountAmount.toLocaleString('pt-BR'), consolidated: result.data.consolidated.toLocaleString('pt-BR')})
-            update(payload)
+            const payload = Object.assign(result.data, {document: format(result.data.document), checkingAccountAmount: result.data.checkingAccountAmount.toLocaleString('pt-BR'), consolidated: result.data.consolidated.toLocaleString('pt-BR')})
+            const token: any = localStorage.getItem('token')
+            update(payload, token)
         }).catch((error) => {
             setShowErrorMessage(true)
         })
@@ -66,7 +74,7 @@ export const PersonalInformation = () => {
                                 <PersonIcon />
                             </ListItemAvatarAtom>
                         </ListItemAvatar>
-                        <ListItemText primary="CPF" secondary={user.cpf} />
+                        <ListItemText primary="CPF" secondary={user.document} />
                     </ListItem>
                     <Divider variant="inset" component="li" />
                     <ListItem>
@@ -89,7 +97,7 @@ export const PersonalInformation = () => {
                         <ListItemAvatarAtom>
                             <PaidIcon />
                         </ListItemAvatarAtom>
-                        <ListItemText primary="Saldo provisionado" secondary={`${user.consolidated} R$`} />
+                        <ListItemText primary="Saldo provisionado (saldo + posições)" secondary={`${user.consolidated} R$`} />
                     </ListItem>
                 </List> : <h2 style={{textAlign: 'center'}}>Não foi possível buscar informações do cliente</h2>}
             </Grid>

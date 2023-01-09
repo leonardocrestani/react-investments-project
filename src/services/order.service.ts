@@ -7,9 +7,10 @@ interface orderPayload {
 
 
 export const orderApi = {
-    create: async (payload: orderPayload, document: string) => {
+    create: async (payload: orderPayload, document: string, token: string) => {
         const order = await axios.post('http://localhost:3003/order', payload, {
             headers: {
+                Authorization: 'Bearer ' + token,
                 'document': document
             }
         })

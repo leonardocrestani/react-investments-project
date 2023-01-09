@@ -24,7 +24,7 @@ interface IFetchResult {
 
 export const InvestedProducts = () => {
 
-    const { user } = useUser()
+    const { user, token } = useUser()
 
     const [result, setResult] = useState<IFetchResult>({
         checkingAccountAmount: 0,
@@ -36,7 +36,7 @@ export const InvestedProducts = () => {
     })
 
     const [pageValue, setPageValue] = useState(1)
-    const [limitValue, setLimitValue] = useState(1)
+    const [limitValue, setLimitValue] = useState(6)
 
     const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false)
 
@@ -51,25 +51,32 @@ export const InvestedProducts = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            return await userApi.findPosition(strip(user.cpf), limitValue, pageValue)
+            if (!user.document) {
+                const token: any = localStorage.getItem('token')
+                const document: any = localStorage.getItem('document')
+                return await userApi.get(strip(document), token)
+            }
+            else {
+                return await userApi.findPosition(strip(user.document), limitValue, pageValue, token)
+            }
         }
         fetchData().then((result: any): any => {
             setResult(result.data)
         }).catch((error) => {
             setShowErrorMessage(true)
         })
-    }, [pageValue, limitValue, user.cpf]);
+    }, [pageValue, limitValue, user.document]);
 
     return (
         <Container fixed>
-            { !showErrorMessage ?
-            <>  <TableHeaderAtom pages={result.pages} handleChange={handleChange}>Seus investimentos</TableHeaderAtom><Grid container spacing={3}>
+            {result.positions.length > 0 ?
+                <>  <TableHeaderAtom pages={result.pages} handleChange={handleChange}>Seus investimentos</TableHeaderAtom><Grid container spacing={3}>
                     {result.positions.map((position: IInvestedTrend) => (
                         <Grid item xs={6}>
                             <InvestedCard name={position.symbol} price={position.currentPrice} amount={position.amount}></InvestedCard>
                         </Grid>)
                     )}
-                </Grid> </>: <h2 style={{textAlign: 'center'}}>Não foi possível buscar as posições do cliente</h2>
+                </Grid> </> : !showErrorMessage ? <h2 style={{ textAlign: 'center' }}>Você ainda não possui posições</h2> : <h2 style={{ textAlign: 'center' }}>Não foi possível buscar as posições do cliente</h2>
             }
         </Container>
     )

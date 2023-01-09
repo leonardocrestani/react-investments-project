@@ -6,11 +6,10 @@ import { useUser } from "../../../contexts/userContext"
 import { strip } from "@fnando/cpf"
 import { useState } from "react"
 import { ErrorModal } from "../errorModal"
-import { userApi } from "../../../services/user.service"
 
 export const DepositModal = ({ children, open, handleClose }: { children: string, open: boolean, handleClose: () => void }) => {
 
-    const { user, update } = useUser()
+    const { user, token } = useUser()
 
     const [showErrorModal, setShowErrorModal] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<string>('')
@@ -32,10 +31,10 @@ export const DepositModal = ({ children, open, handleClose }: { children: string
     const submitDeposit = async (args: any) => {
         const formPayload: any = args.fields.reduce(
             (obj: any, field: any) => Object.assign(obj, { [field.name]: field.value }), {});
-        const payload = Object.assign(formPayload, { event: "TRANSFER", document: strip(user.cpf) })
+        const payload = Object.assign(formPayload, { event: "TRANSFER", document: strip(user.document) })
         payload.amount = parseFloat(payload.amount)
         try {
-            await transactionApi.create(payload)
+            await transactionApi.create(payload, token)
             handleClose()
         }
         catch (error: any) {
@@ -47,6 +46,9 @@ export const DepositModal = ({ children, open, handleClose }: { children: string
             }
             if (error.response.data.statusCode === 403) {
                 setErrorMessage('CPF inválido')
+            }
+            if (error.response.data.statusCode === 401) {
+                setErrorMessage('Usuario não autenticado')
             }
             setShowErrorModal(true)
         }
